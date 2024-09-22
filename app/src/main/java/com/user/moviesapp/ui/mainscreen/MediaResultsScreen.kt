@@ -2,6 +2,7 @@ package com.user.moviesapp.ui.mainscreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,7 +26,10 @@ import com.user.data.constant.Constants.IMAGE_BASE_URL
 import com.user.data.model.MediaItem
 
 @Composable
-fun MediaResultsScreen(mediaResults: Map<String, List<MediaItem>>, onItemClick: (MediaItem) -> Unit) {
+fun MediaResultsScreen(
+    mediaResults: Map<String, List<MediaItem>>,
+    onItemClick: (MediaItem) -> Unit
+) {
     if (mediaResults.isEmpty()) {
         Text("No results found", modifier = Modifier.padding(16.dp))
     } else {
@@ -39,7 +44,7 @@ fun MediaResultsScreen(mediaResults: Map<String, List<MediaItem>>, onItemClick: 
                         style = MaterialTheme.typography.headlineMedium,
                         modifier = Modifier.padding(8.dp)
                     )
-                    Carousel(mediaItems,onItemClick)
+                    Carousel(mediaItems, onItemClick)
                 }
             }
         }
@@ -48,12 +53,15 @@ fun MediaResultsScreen(mediaResults: Map<String, List<MediaItem>>, onItemClick: 
 
 @Composable
 fun Carousel(mediaItems: List<MediaItem>, onItemClick: (MediaItem) -> Unit) {
+    val lazyListState = rememberLazyListState()
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
+        state = lazyListState,
+        flingBehavior = rememberSnapFlingBehavior(lazyListState),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(mediaItems) { mediaItem ->
-            MediaCard(mediaItem,onItemClick)
+            MediaCard(mediaItem, onItemClick)
         }
     }
 }

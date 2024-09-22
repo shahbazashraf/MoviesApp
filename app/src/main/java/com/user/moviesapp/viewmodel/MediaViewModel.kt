@@ -27,9 +27,11 @@ class MediaViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyMap())
 
+    // We can use this to display any loading indicator, haven't implemented yet
     private val _loading = MutableStateFlow(false)
     val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
+    // We can use this to display error e.g. dialog, haven't implemented yet
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error.asStateFlow()
 
